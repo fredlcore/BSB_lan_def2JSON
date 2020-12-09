@@ -15,7 +15,19 @@ using namespace std;
 
 #define PROGMEM_LATE
 
+#define LANG DE
 #include "../../bsb_lan/BSB_lan_defs.h"
+
+
+/* add feature to load all languages in one round */
+/* this works only in different cpp file -> compile to different .o files and than include them */
+// #define LANG EN
+// #define ENUM_CAT ENUM_CAT_EN
+// #define cmdtbl1 cmdtbl1_en
+// #include "../../bsb_lan/BSB_lan_defs.h"
+// #define ENUM_CAT ENUM_CAT
+// #define cmdtbl1 cmdtbl1
+
 
 std::string string_to_hex(const std::string &input)
 {
@@ -40,8 +52,7 @@ bool replace(std::string &str, const std::string &from, const std::string &to)
     return true;
 }
 
-template <typename I>
-std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1)
+template <typename I> std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1)
 {
     static const char *digits = "0123456789ABCDEF";
     std::string rc(hex_len, '0');
@@ -98,7 +109,11 @@ int main()
     std::string enumcat = std::string(ENUM_CAT, sizeof(ENUM_CAT));
     std::map<int, std::string> categories = readENUM(enumcat);
 
-    for (int i = 0; i < size1 + size2; i++)
+    int allSize = size1 + size2;
+
+  //  allSize = 50;
+
+    for (int i = 0; i < allSize; i++)
     {
         cmd_t data = cmdtbl[i];
 
@@ -121,19 +136,20 @@ int main()
         cout << "    \"unit\" : \"" << unit << "\"," << endl;
         cout << "    \"datatype\" : \"" << dt_types_text[optbl[data.type].data_type].type_text << "\"," << endl;
         cout << "    \"factor\" : \"" << optbl[data.type].operand << "\"," << endl;
-        cout << "    \"precision\" : \"" << std::to_string(optbl[data.type].precision) << "\"" << endl;
+        cout << "    \"precision\" : \"" << std::to_string(optbl[data.type].precision) << "\"," << endl;
+        cout << "    \"enable_byte\" : \"" << to_string((optbl[data.type].enable_byte)) << "\"" << endl;
         cout << "  }," << endl;
 
         cout << "  \"parameter\" : " << std::to_string(data.line) << "," << endl;
-        cout << "  \"description\" : \"" << data.desc << "\""
-             << "," << endl;
+        cout << "  \"description\" : \"" << data.desc << "\""  << "," << endl;
+      //  cout << "  \"description_en\" : \"" << data_en.desc << "\""
+       
 
         if (data.enumstr_len > 0)
         {
             cout << "  \"enum\" : {" << endl;
 
             std::string enumstr = string(data.enumstr, data.enumstr_len);
-
             std::map<int, std::string> enumData = readENUM(enumstr);
 
             for (std::map<int, std::string>::iterator it = enumData.begin(); it != enumData.end(); ++it)
