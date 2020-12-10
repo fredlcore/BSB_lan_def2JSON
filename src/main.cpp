@@ -135,9 +135,10 @@ int main()
 
         cout << "    \"unit\" : \"" << unit << "\"," << endl;
         cout << "    \"datatype\" : \"" << dt_types_text[optbl[data.type].data_type].type_text << "\"," << endl;
-        cout << "    \"factor\" : \"" << optbl[data.type].operand << "\"," << endl;
-        cout << "    \"precision\" : \"" << std::to_string(optbl[data.type].precision) << "\"," << endl;
-        cout << "    \"enable_byte\" : \"" << to_string((optbl[data.type].enable_byte)) << "\"" << endl;
+        cout << "    \"factor\" : " << optbl[data.type].operand << "," << endl;
+        cout << "    \"payload_length\" : " << std::to_string(optbl[data.type].payload_length) << "," << endl;
+        cout << "    \"precision\" : " << std::to_string(optbl[data.type].precision) << "," << endl;
+        cout << "    \"enable_byte\" : " << to_string((optbl[data.type].enable_byte)) << "" << endl;
         cout << "  }," << endl;
 
         cout << "  \"parameter\" : " << std::to_string(data.line) << "," << endl;
