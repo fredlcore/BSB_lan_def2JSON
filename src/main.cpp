@@ -120,6 +120,7 @@ int main()
         cout << "" << endl;
         cout << "  \"" << std::to_string(i) << "\": {" << endl;
 #ifndef ONLYTEXT
+        cout << "  \"parameter\" : " << std::to_string(data.line) << "," << endl;
         cout << "  \"command\" : \"0x" << n2hexstr(data.cmd) << "\"," << endl;
 #endif
         cout << "  \"category\" : {" << endl;
@@ -149,7 +150,6 @@ int main()
         cout << "    \"precision\" : " << std::to_string(optbl[data.type].precision) << "," << endl;
         cout << "    \"enable_byte\" : " << to_string((optbl[data.type].enable_byte)) << "" << endl;
         cout << "  }," << endl;
-        cout << "  \"parameter\" : " << std::to_string(data.line) << "," << endl;
 #endif
         cout << "  \"description\": {" << endl;
         cout << "      \"" << LANGS "\": \"" << data.desc << "\"" << endl;
@@ -189,10 +189,10 @@ int main()
             cout << "    \"SW_CTL_READONLY\"," << endl;
         cout << "    \"\"" << endl;
         cout << "  ]," << endl;
-        cout << "  \"device\" : {" << endl;
+        cout << "  \"device\" : [{" << endl;
         cout << "    \"family\": " << std::to_string(data.dev_fam) << "," << endl;
         cout << "    \"var\" : " << std::to_string(data.dev_var) << "" << endl;
-        cout << "  }" << endl;
+        cout << "  }]" << endl;
 #else
         cout << "    \"dummy\" : 0" << endl;
 #endif

@@ -97,7 +97,14 @@ for (let key in combined.commands) {
     let idx = item.flags.lastIndexOf('')
     if (idx > -1)
       item.flags = item.flags.slice(idx + 1);
+
+    if (item.flags.length == 0)
+      delete item.flags;
   }
+
+  if (item.device && item.device.length == 1 && item.device[0].family == 255 && item.device[0].family == 255)
+    delete item.device;
+
   if (item.dummy !== undefined)
     delete item.dummy;
   categorie.commands.push(item);
