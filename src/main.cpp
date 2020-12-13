@@ -2,20 +2,19 @@
 #include <string>
 #include <map>
 #include <cstring>
-// #include "Objects/box.h"
+#include "../../bsb_lan/bsb-version.h"
 
 using namespace std;
 
 #define DEFAULT_FLAG 0
 
-// /usr/bin/clang++ --std=c++11 main.cpp -D'LANG=C' -o main && ./main > output.json
-// #define LANG FR
 
 #define PROGMEM
 
 #define PROGMEM_LATE
 
-#define LANG DE
+// #define LANG DE
+// #define ONLYTEXT
 #include "../../bsb_lan/BSB_lan_defs.h"
 
 
@@ -90,10 +89,17 @@ std::map<int, std::string> readENUM(std::string enumstr)
     return result;
 }
 
+#define LANGSTR str(LANG);
+
 int main()
 {
-    cout << "[" << endl;
-
+    cout << "{" << endl;
+#ifndef ONLYTEXT  
+    cout << "  \"Version\": \"" << MAJOR << "." << MINOR << "." << PATCH << "\"," << endl;
+    cout << "  \"Compiletime\": \"" << COMPILETIME <<  "\"," << endl;
+#endif  
+   
+    cout << "  \"commands\": [" << endl;
     cmd_t *cmdtbl;
 
     int size1 = sizeof(cmdtbl1) / sizeof(cmdtbl1[0]);
@@ -119,13 +125,20 @@ int main()
 
         cout << "{" << endl;
         cout << "  \"index\" : " << std::to_string(i) << "," << endl;
+#ifndef ONLYTEXT  
         cout << "  \"command\" : \"0x" << n2hexstr(data.cmd) << "\"," << endl;
+#endif        
         cout << "  \"category\" : {" << endl;
-        cout << "    \"name\": \"" << categories[data.category] << "\"," << endl;
+        cout << "    \"name\": \"" << categories[data.category] << "\"";
+#ifndef ONLYTEXT        
+        cout << "," << endl;
         cout << "    \"min\" : " << std::to_string(ENUM_CAT_NR[data.category * 2]) << "," << endl;
         cout << "    \"max\" : " << std::to_string(ENUM_CAT_NR[data.category * 2 + 1]) << "" << endl;
+#else
+        cout << endl;
+#endif
         cout << "  }," << endl;
-
+#ifndef ONLYTEXT   
         cout << "  \"type\" : {" << endl;
         cout << "    \"name\" : \"" << optbl[data.type].type_text << "\"," << endl;
         std::string unit = optbl[data.type].unit;
@@ -140,12 +153,10 @@ int main()
         cout << "    \"precision\" : " << std::to_string(optbl[data.type].precision) << "," << endl;
         cout << "    \"enable_byte\" : " << to_string((optbl[data.type].enable_byte)) << "" << endl;
         cout << "  }," << endl;
-
-        cout << "  \"parameter\" : " << std::to_string(data.line) << "," << endl;
+        cout << "  \"parameter\" : " << std::to_string(data.line) << "," << endl;    
+#endif        
         cout << "  \"description\" : \"" << data.desc << "\""  << "," << endl;
-      //  cout << "  \"description_en\" : \"" << data_en.desc << "\""
-       
-
+        
         if (data.enumstr_len > 0)
         {
             cout << "  \"enum\" : {" << endl;
@@ -165,13 +176,30 @@ int main()
 
             cout << "    }," << endl;
         }
-        cout << "  \"flag\" : " << std::to_string(data.flags) << "," << endl;
+#ifndef ONLYTEXT        
+        cout << "  \"flags\" : ["  << endl;
+        if ((data.flags & FL_RONLY) == FL_RONLY)
+            cout << "    \"READONLY\",";
+        if ((data.flags & FL_NO_CMD) == FL_NO_CMD)
+            cout << "    \"NO_CMD\",";
+        if ((data.flags & FL_OEM) == FL_OEM)
+            cout << "    \"OEM\",";
+        if ((data.flags & FL_SPECIAL_INF) == FL_SPECIAL_INF)
+            cout << "    \"SPECIAL_INF\",";
+        if ((data.flags & FL_SW_CTL_RONLY) == FL_SW_CTL_RONLY)
+            cout << "    \"SW_CTL_READONLY\",";
+        cout << "  \"\"" << endl;
+        cout << "  ]," << endl;
         cout << "  \"device\" : {" << endl;
         cout << "    \"family\": " << std::to_string(data.dev_fam) << "," << endl;
         cout << "    \"var\" : " << std::to_string(data.dev_var) << "" << endl;
         cout << "  }" << endl;
-        cout << "}," << endl;
+#else
+        cout << "    \"dummy\" : 0" << endl;     
+#endif        
+        cout << "  }," << endl;
     }
 
-    cout << "{}]" << endl;
+    cout << "  {}]" << endl;
+    cout << "}" << endl;
 }
