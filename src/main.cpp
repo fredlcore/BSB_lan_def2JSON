@@ -8,25 +8,18 @@ using namespace std;
 
 #define DEFAULT_FLAG 0
 
-
 #define PROGMEM
 
 #define PROGMEM_LATE
 
 // #define LANG DE
+//
 // #define ONLYTEXT
+#ifndef LANGS
+#define LANGS "DE"
+#endif
+
 #include "../../bsb_lan/BSB_lan_defs.h"
-
-
-/* add feature to load all languages in one round */
-/* this works only in different cpp file -> compile to different .o files and than include them */
-// #define LANG EN
-// #define ENUM_CAT ENUM_CAT_EN
-// #define cmdtbl1 cmdtbl1_en
-// #include "../../bsb_lan/BSB_lan_defs.h"
-// #define ENUM_CAT ENUM_CAT
-// #define cmdtbl1 cmdtbl1
-
 
 std::string string_to_hex(const std::string &input)
 {
@@ -51,7 +44,8 @@ bool replace(std::string &str, const std::string &from, const std::string &to)
     return true;
 }
 
-template <typename I> std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1)
+template <typename I>
+std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1)
 {
     static const char *digits = "0123456789ABCDEF";
     std::string rc(hex_len, '0');
@@ -75,7 +69,7 @@ std::map<int, std::string> readENUM(std::string enumstr)
         std::string keys = enumstr.substr(pos, space - pos);
         std::string desc = enumstr.substr(space + 1, end - space - 1);
         int key = 0;
-     
+
         char charBuf[1024];
         strcpy(charBuf, keys.c_str());
 
@@ -94,12 +88,12 @@ std::map<int, std::string> readENUM(std::string enumstr)
 int main()
 {
     cout << "{" << endl;
-#ifndef ONLYTEXT  
+#ifndef ONLYTEXT
     cout << "  \"Version\": \"" << MAJOR << "." << MINOR << "." << PATCH << "\"," << endl;
-    cout << "  \"Compiletime\": \"" << COMPILETIME <<  "\"," << endl;
-#endif  
-   
-    cout << "  \"commands\": [" << endl;
+    cout << "  \"Compiletime\": \"" << COMPILETIME << "\"," << endl;
+#endif
+
+    cout << "  \"commands\": {" << endl;
     cmd_t *cmdtbl;
 
     int size1 = sizeof(cmdtbl1) / sizeof(cmdtbl1[0]);
@@ -117,20 +111,22 @@ int main()
 
     int allSize = size1 + size2;
 
-  //  allSize = 50;
+    //  allSize = 50;
 
     for (int i = 0; i < allSize; i++)
     {
         cmd_t data = cmdtbl[i];
 
-        cout << "{" << endl;
-        cout << "  \"index\" : " << std::to_string(i) << "," << endl;
-#ifndef ONLYTEXT  
+        cout << "" << endl;
+        cout << "  \"" << std::to_string(i) << "\": {" << endl;
+#ifndef ONLYTEXT
         cout << "  \"command\" : \"0x" << n2hexstr(data.cmd) << "\"," << endl;
-#endif        
+#endif
         cout << "  \"category\" : {" << endl;
-        cout << "    \"name\": \"" << categories[data.category] << "\"";
-#ifndef ONLYTEXT        
+        cout << "    \"name\": {" << endl;
+        cout << "      \"" << LANGS "\": \"" << categories[data.category] << "\"" << endl;
+        cout << "    }";
+#ifndef ONLYTEXT
         cout << "," << endl;
         cout << "    \"min\" : " << std::to_string(ENUM_CAT_NR[data.category * 2]) << "," << endl;
         cout << "    \"max\" : " << std::to_string(ENUM_CAT_NR[data.category * 2 + 1]) << "" << endl;
@@ -138,7 +134,7 @@ int main()
         cout << endl;
 #endif
         cout << "  }," << endl;
-#ifndef ONLYTEXT   
+#ifndef ONLYTEXT
         cout << "  \"type\" : {" << endl;
         cout << "    \"name\" : \"" << optbl[data.type].type_text << "\"," << endl;
         std::string unit = optbl[data.type].unit;
@@ -153,10 +149,12 @@ int main()
         cout << "    \"precision\" : " << std::to_string(optbl[data.type].precision) << "," << endl;
         cout << "    \"enable_byte\" : " << to_string((optbl[data.type].enable_byte)) << "" << endl;
         cout << "  }," << endl;
-        cout << "  \"parameter\" : " << std::to_string(data.line) << "," << endl;    
-#endif        
-        cout << "  \"description\" : \"" << data.desc << "\""  << "," << endl;
-        
+        cout << "  \"parameter\" : " << std::to_string(data.line) << "," << endl;
+#endif
+        cout << "  \"description\": {" << endl;
+        cout << "      \"" << LANGS "\": \"" << data.desc << "\"" << endl;
+        cout << "    }," << endl;
+
         if (data.enumstr_len > 0)
         {
             cout << "  \"enum\" : {" << endl;
@@ -169,37 +167,38 @@ int main()
                 if (it != enumData.begin())
                     cout << "," << endl;
 
-                cout << "    \"0x" << n2hexstr(it->first, 4) << "\" :";
-                cout << "\"" << it->second << "\"";
+                cout << "    \"0x" << n2hexstr(it->first, 4) << "\" : {" << endl;
+                cout << "      \"" << LANGS "\": \"" << it->second << "\"" << endl;
+                cout << "    }";
             }
             cout << endl;
 
             cout << "    }," << endl;
         }
-#ifndef ONLYTEXT        
-        cout << "  \"flags\" : ["  << endl;
+#ifndef ONLYTEXT
+        cout << "  \"flags\" : [" << endl;
         if ((data.flags & FL_RONLY) == FL_RONLY)
-            cout << "    \"READONLY\",";
+            cout << "    \"READONLY\"," << endl;
         if ((data.flags & FL_NO_CMD) == FL_NO_CMD)
-            cout << "    \"NO_CMD\",";
+            cout << "    \"NO_CMD\"," << endl;
         if ((data.flags & FL_OEM) == FL_OEM)
-            cout << "    \"OEM\",";
+            cout << "    \"OEM\"," << endl;
         if ((data.flags & FL_SPECIAL_INF) == FL_SPECIAL_INF)
-            cout << "    \"SPECIAL_INF\",";
+            cout << "    \"SPECIAL_INF\"," << endl;
         if ((data.flags & FL_SW_CTL_RONLY) == FL_SW_CTL_RONLY)
-            cout << "    \"SW_CTL_READONLY\",";
-        cout << "  \"\"" << endl;
+            cout << "    \"SW_CTL_READONLY\"," << endl;
+        cout << "    \"\"" << endl;
         cout << "  ]," << endl;
         cout << "  \"device\" : {" << endl;
         cout << "    \"family\": " << std::to_string(data.dev_fam) << "," << endl;
         cout << "    \"var\" : " << std::to_string(data.dev_var) << "" << endl;
         cout << "  }" << endl;
 #else
-        cout << "    \"dummy\" : 0" << endl;     
-#endif        
+        cout << "    \"dummy\" : 0" << endl;
+#endif
         cout << "  }," << endl;
     }
 
-    cout << "  {}]" << endl;
+    cout << "  \"END\" : {} }" << endl;
     cout << "}" << endl;
 }
