@@ -102,12 +102,30 @@ for (let key in combined.commands) {
       delete item.flags;
   }
 
-  if (item.device && item.device.length == 1 && item.device[0].family == 255 && item.device[0].family == 255)
-    delete item.device;
+  // if (item.device && item.device.length == 1 && item.device[0].family == 255 && item.device[0].family == 255)
+  //   delete item.device;
 
   if (item.dummy !== undefined)
     delete item.dummy;
-  categorie.commands.push(item);
+
+  let copyitem = { ...item };
+  delete copyitem.device;
+  let compareItem = JSON.stringify(copyitem);
+
+  for (const cmd of categorie.commands) {
+    let copycmd = { ...cmd };
+    delete copycmd.device;
+    let compareCmd = JSON.stringify(copycmd);
+
+    if (compareCmd == compareItem)
+    {
+      cmd.device = cmd.device.concat(item.device)
+      item = null;
+      break;
+    }
+  }
+  if (item != null)
+    categorie.commands.push(item);
 }
 combined.commands = categories;
 
