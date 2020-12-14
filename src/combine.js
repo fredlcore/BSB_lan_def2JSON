@@ -49,8 +49,14 @@ for (i = 0; i < entries.length; i++) {
 console.log("cleanup");
 
 function cleanUpLang(input) {
-  let de = input['DE'];
-  let en = input['EN'];
+  let de = null;
+  if (input.hasOwnProperty('DE'))
+    de = input['DE'];
+
+  let en = null;
+  if (input.hasOwnProperty('EN'))
+    en = input['EN'];
+
 
   if (de == en)
     delete input['EN'];
@@ -91,6 +97,9 @@ for (let key in combined.commands) {
     }
   }
 
+  if (item.type && item.type.unit)
+    item.type.unit = cleanUpLang(item.type.unit);
+
   if (item.flags) {
     item.flags = item.flags.sort();
 
@@ -117,8 +126,7 @@ for (let key in combined.commands) {
     delete copycmd.device;
     let compareCmd = JSON.stringify(copycmd);
 
-    if (compareCmd == compareItem)
-    {
+    if (compareCmd == compareItem) {
       cmd.device = cmd.device.concat(item.device)
       item = null;
       break;
@@ -127,7 +135,15 @@ for (let key in combined.commands) {
   if (item != null)
     categorie.commands.push(item);
 }
-combined.commands = categories;
+
+combined.version = combined.Version;
+delete combined.Version;
+
+combined.compiletime = combined.Compiletime;
+delete combined.Compiletime;
+
+combined.categories = categories;
+delete combined.commands;
 
 // walk through the tree and fix the tree
 // idx: object -> array

@@ -135,22 +135,27 @@ int main()
         cout << endl;
 #endif
         cout << "  }," << endl;
-#ifndef ONLYTEXT
+
         cout << "  \"type\" : {" << endl;
-        cout << "    \"name\" : \"" << optbl[data.type].type_text << "\"," << endl;
         std::string unit = optbl[data.type].unit;
         replace(unit, "&#037;", "%");
         replace(unit, "&#181;", "µ");
         replace(unit, "&deg;", "°");
-
-        cout << "    \"unit\" : \"" << unit << "\"," << endl;
+        cout << "    \"unit\" : {" << endl;
+         cout << "      \"" << LANGS "\": \"" << unit << "\"" << endl;
+         cout << "    }";
+#ifndef ONLYTEXT        
+        cout << "," << endl;
+        cout << "    \"name\" : \"" << optbl[data.type].type_text << "\"," << endl;
         cout << "    \"datatype\" : \"" << dt_types_text[optbl[data.type].data_type].type_text << "\"," << endl;
         cout << "    \"factor\" : " << optbl[data.type].operand << "," << endl;
         cout << "    \"payload_length\" : " << std::to_string(optbl[data.type].payload_length) << "," << endl;
         cout << "    \"precision\" : " << std::to_string(optbl[data.type].precision) << "," << endl;
         cout << "    \"enable_byte\" : " << to_string((optbl[data.type].enable_byte)) << "" << endl;
-        cout << "  }," << endl;
+#else
+        cout << endl;
 #endif
+        cout << "  }," << endl;
         cout << "  \"description\": {" << endl;
         cout << "      \"" << LANGS "\": \"" << data.desc << "\"" << endl;
         cout << "    }," << endl;
