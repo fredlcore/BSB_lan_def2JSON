@@ -9,4 +9,4 @@ done
 rm main
 node src/combine.js
 
-# rm output*.json
+rm output*.json
