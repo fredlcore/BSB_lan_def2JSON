@@ -56,6 +56,9 @@ std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1)
 
 std::map<int, std::string> readENUM(std::string enumstr)
 {
+
+// ADD catalist from BSB_lan_EEPROMconfig.h to EXPORT
+
     std::map<int, std::string> result;
 
     int pos = 0;
@@ -148,6 +151,7 @@ int main()
         cout << "," << endl;
         cout << "    \"name\" : \"" << optbl[data.type].type_text << "\"," << endl;
         cout << "    \"datatype\" : \"" << dt_types_text[optbl[data.type].data_type].type_text << "\"," << endl;
+        cout << "    \"datatype_id\" : "  << to_string(optbl[data.type].data_type) << "," << endl;
         cout << "    \"factor\" : " << optbl[data.type].operand << "," << endl;
         cout << "    \"payload_length\" : " << std::to_string(optbl[data.type].payload_length) << "," << endl;
         cout << "    \"precision\" : " << std::to_string(optbl[data.type].precision) << "," << endl;
