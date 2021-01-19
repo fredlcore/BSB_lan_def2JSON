@@ -42,4 +42,5 @@ jobs:
         path: 'bsbDef'
 
     - name: build
+      working-directory: main/
       run: ./compile.sh 
