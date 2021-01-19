@@ -156,7 +156,7 @@ for (const catKey in combined.categories) {
     
       type.payload_flags = type.payload_length & 0xE0
       type.payload_length = type.payload_length & 0x1F
-      type.enable_byte_read = 
+      //type.enable_byte_read = 
      // enable_byte
   }
 }
