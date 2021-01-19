@@ -22,7 +22,13 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: 'fredlcore/bsb_lan'
-        path: 'bsb_lan'
+        path: '../bsb_lan'
+
+    - name: Checkout bsbDef
+      uses: actions/checkout@v2
+      with:
+        repository: 'easyBSB/bsbDef'
+        path: '../bsbDef'
 
     - name: build
       run: ./compile.sh 

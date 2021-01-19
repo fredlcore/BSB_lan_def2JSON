@@ -12,9 +12,6 @@ using namespace std;
 
 #define PROGMEM_LATE
 
-// #define LANG DE
-//
-// #define ONLYTEXT
 #ifndef LANGS
 #define LANGS "DE"
 #endif
@@ -176,7 +173,8 @@ int main()
                 if (it != enumData.begin())
                     cout << "," << endl;
 
-                cout << "    \"0x" << n2hexstr(it->first, 4) << "\" : {" << endl;
+                // cout << "    \"0x" << n2hexstr(it->first, 4) << "\" : {" << endl;
+                cout << "    \"" << to_string(it->first) << "\" : {" << endl;
                 cout << "      \"" << LANGS "\": \"" << it->second << "\"" << endl;
                 cout << "    }";
             }

@@ -145,6 +145,29 @@ delete combined.Compiletime;
 combined.categories = categories;
 delete combined.commands;
 
+// fix as Workaround for ISSUE https://github.com/fredlcore/bsb_lan/issues/250
+for (const catKey in combined.categories) {
+  const cat = combined.categories[catKey]
+  for (const cmd of cat.commands) {
+
+    const type = cmd.type
+    if (type.name == "TIMEPROG")
+      type.datatype = "TMPR"
+    
+      type.payload_flags = type.payload_length & 0xE0
+      type.payload_length = type.payload_length & 0x1F
+      type.enable_byte_read = 
+     // enable_byte
+  }
+}
+
+
+ // for regular commands either 1 or 6. 8 indicates data type does not use enable. 0 indicates no set telegram has been logged to determine correct enable byte.
+
+
+  // length of payload in byte; +32 if special treatment is needed, +64 if payload length can vary; 0 for read-only type or unknown length
+
+
 // walk through the tree and fix the tree
 // idx: object -> array
 // remove "" flags
