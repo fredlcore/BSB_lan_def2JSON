@@ -1,0 +1,28 @@
+name: compile
+
+on:
+  schedule:
+    - cron:  '*/15 * * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 15.x
+
+    - name: Checkout bsb_lan
+      uses: actions/checkout@v2
+      with:
+        repository: 'https://github.com/fredlcore/bsb_lan/'
+        path: 'bsb_lan'
+
+    - name: build
+      run: ./compile.sh 
