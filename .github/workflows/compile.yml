@@ -21,7 +21,7 @@ jobs:
     - name: Checkout bsb_lan
       uses: actions/checkout@v2
       with:
-        repository: 'https://github.com/fredlcore/bsb_lan/'
+        repository: 'fredlcore/bsb_lan'
         path: 'bsb_lan'
 
     - name: build
