@@ -142,8 +142,8 @@ int main()
         replace(unit, "&#181;", "µ");
         replace(unit, "&deg;", "°");
         cout << "    \"unit\" : {" << endl;
-         cout << "      \"" << LANGS "\": \"" << unit << "\"" << endl;
-         cout << "    }";
+        cout << "      \"" << LANGS "\": \"" << unit << "\"" << endl;
+        cout << "    }";
 #ifndef ONLYTEXT        
         cout << "," << endl;
         cout << "    \"name\" : \"" << optbl[data.type].type_text << "\"," << endl;
@@ -161,7 +161,7 @@ int main()
         cout << "      \"" << LANGS "\": \"" << data.desc << "\"" << endl;
         cout << "    }," << endl;
 
-        if (data.enumstr_len > 0)
+        if (data.enumstr_len > 0 && data.enumstr != NULL)
         {
             cout << "  \"enum\" : {" << endl;
 
