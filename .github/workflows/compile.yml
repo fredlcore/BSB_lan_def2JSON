@@ -2,7 +2,7 @@ name: compile
 
 on:
   schedule:
-    - cron:  '28 * * * *'
+    - cron:  '05 * * * *'
   push:
     branches: [ main, development ]
     paths:
@@ -42,7 +42,7 @@ jobs:
       with:
         repository: 'fredlcore/bsbDef'
         path: 'bsbDef'
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.PAT_BSBDEF }}
 
     - name: build
       working-directory: main/
