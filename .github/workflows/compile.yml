@@ -2,7 +2,7 @@ name: compile
 
 on:
   schedule:
-    - cron:  '11 * * * *'
+    - cron:  '28 * * * *'
   push:
     branches: [ main, development ]
     paths:
