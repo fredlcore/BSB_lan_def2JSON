@@ -40,9 +40,8 @@ jobs:
     - name: Checkout bsbDef
       uses: actions/checkout@v2
       with:
-        repository: 'easyBSB/bsbDef'
+        repository: 'fredlcore/bsbDef'
         path: 'bsbDef'
-        token: ${{ secrets.PAT }}
 
     - name: build
       working-directory: main/
