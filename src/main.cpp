@@ -104,7 +104,7 @@ int main()
 
     std::copy(cmdtbl1, cmdtbl1 + size1, cmdtbl);
     std::copy(cmdtbl2, cmdtbl2 + size2, cmdtbl + size1);
-    //  std::copy(cmdtbl3, cmdtbl3 + size3, cmdtbl + size2);
+    std::copy(cmdtbl3, cmdtbl3 + size3, cmdtbl + size2);
 
     std::string enumcat = std::string(ENUM_CAT, sizeof(ENUM_CAT));
     std::map<int, std::string> categories = readENUM(enumcat);
