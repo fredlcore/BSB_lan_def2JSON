@@ -2,7 +2,7 @@
 #include <string>
 #include <map>
 #include <cstring>
-#include "../../bsb_lan/BSB_LAN/bsb-version.h"
+#include "../../BSB-LAN/BSB_LAN/bsb-version.h"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ using namespace std;
 #define LANGS "DE"
 #endif
 
-#include "../../bsb_lan/BSB_LAN/BSB_LAN_defs.h"
+#include "../../BSB-LAN/BSB_LAN/BSB_LAN_defs.h"
 
 std::string string_to_hex(const std::string &input)
 {
