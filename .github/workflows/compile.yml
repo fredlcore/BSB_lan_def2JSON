@@ -42,6 +42,7 @@ jobs:
       with:
         repository: 'fredlcore/bsbDef'
         path: 'bsbDef'
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: build
       working-directory: main/
